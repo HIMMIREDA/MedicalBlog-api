@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo
+    container_name: my-mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb-volume:/data/db
+    networks:
+      - db-net
+
+  elasticsearch:
+    image: elasticsearch:7.4.0
+    container_name: elasticsearch
+    restart: always
+    networks:
+      - db-net
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+
+    volumes:
+      - elasticsearch-data-volume:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  kibana:
+    container_name: kibana
+    image: kibana:7.4.0
+    restart: always
+    networks:
+      - db-net
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+networks:
+  db-net:
+
+
+volumes:
+  elasticsearch-data-volume:
+  mongodb-volume:
