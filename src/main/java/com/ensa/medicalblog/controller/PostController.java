@@ -1,6 +1,6 @@
 package com.ensa.medicalblog.controller;
 
-import com.ensa.medicalblog.dto.CreatePostRequest;
+import com.ensa.medicalblog.dto.request.CreatePostRequest;
 import com.ensa.medicalblog.entity.Post;
 import com.ensa.medicalblog.service.PostService;
 import lombok.AllArgsConstructor;
