@@ -1,22 +1,19 @@
-package com.ensa.medicalblog.dto.response;
+package com.ensa.medicalblog.graphql.input;
 
+import io.leangen.graphql.annotations.GraphQLNonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class GetPostResponse {
-    private String id;
-
+public class PostInput {
+    @GraphQLNonNull
     private String title;
 
+    @GraphQLNonNull
     private String content;
-
-    private LocalDateTime createdAt;
 }

@@ -1,39 +1,31 @@
-package com.ensa.medicalblog.entity;
+package com.ensa.medicalblog.graphql.model;
 
+import io.leangen.graphql.annotations.GraphQLNonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "posts")
-@Builder
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
+@Data
+@Builder
 public class Post {
-    @MongoId(FieldType.OBJECT_ID)
+    @GraphQLNonNull
     private String id;
 
-    @Indexed
+    @GraphQLNonNull
     private String title;
 
+    @GraphQLNonNull
     private String content;
 
-    @Field(targetType = FieldType.DATE_TIME)
-    @CreatedDate
+    @GraphQLNonNull
     private LocalDateTime createdAt;
-
-    @Field(targetType = FieldType.DATE_TIME)
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
 }

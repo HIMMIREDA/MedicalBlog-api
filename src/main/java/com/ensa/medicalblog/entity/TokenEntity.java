@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 @Builder
-public class Token {
+public class TokenEntity {
     @Id
     private String id;
 
@@ -29,6 +29,6 @@ public class Token {
     private boolean revoked;
 
     @DBRef
-    private User user;
+    private UserEntity userEntity;
 
 }

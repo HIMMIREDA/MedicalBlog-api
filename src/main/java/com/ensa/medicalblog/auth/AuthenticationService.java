@@ -1,9 +1,9 @@
 package com.ensa.medicalblog.auth;
 import com.ensa.medicalblog.config.JwtService;
 import com.ensa.medicalblog.entity.Role;
-import com.ensa.medicalblog.entity.Token;
+import com.ensa.medicalblog.entity.TokenEntity;
 import com.ensa.medicalblog.entity.TokenType;
-import com.ensa.medicalblog.entity.User;
+import com.ensa.medicalblog.entity.UserEntity;
 import com.ensa.medicalblog.repository.TokenRepository;
 import com.ensa.medicalblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
+        var user = UserEntity.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
@@ -37,9 +37,9 @@ public class AuthenticationService {
                 .build();
     }
 
-    private void saveUserToken(User savedUser, String jwtToken) {
-        var token = Token.builder()
-                .user(savedUser)
+    private void saveUserToken(UserEntity savedUserEntity, String jwtToken) {
+        var token = TokenEntity.builder()
+                .userEntity(savedUserEntity)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
@@ -63,8 +63,8 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
-    private void revokeAllUserTokens(User user){
-        var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+    private void revokeAllUserTokens(UserEntity userEntity){
+        var validUserTokens = tokenRepository.findAllValidTokensByUser(userEntity.getId());
         if(validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(t -> {
