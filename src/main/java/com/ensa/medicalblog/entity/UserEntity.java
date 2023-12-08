@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
     @Id
     private String id;
     private String firstname;
@@ -33,19 +33,20 @@ public class User implements UserDetails {
     private Role role;
 
     @DBRef
-    private List<Token> tokens;
+    private List<TokenEntity> tokenEntities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
     public String getUsername() {
         return email;
     }
+
     @Override
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
