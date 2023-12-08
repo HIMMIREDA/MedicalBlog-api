@@ -7,15 +7,18 @@ import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @GraphQLApi
 public class PostMutation {
-    private PostService postService;
+    private final PostService postService;
 
     @GraphQLMutation
+    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
     public @GraphQLNonNull Post createPost(@GraphQLNonNull PostInput postInput){
         return postService.createPost(postInput);
     }
