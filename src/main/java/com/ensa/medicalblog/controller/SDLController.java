@@ -19,8 +19,6 @@ public class SDLController {
                 SchemaPrinter.Options.defaultOptions()
                         .includeDirectives(false)
                         .descriptionsAsHashComments(true)
-
         ).print(graphQLSchema);
     }
-
 }
