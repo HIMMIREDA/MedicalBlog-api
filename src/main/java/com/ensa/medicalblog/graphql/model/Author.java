@@ -1,21 +1,22 @@
-package com.ensa.medicalblog.graphql.input;
+package com.ensa.medicalblog.graphql.model;
 
 import io.leangen.graphql.annotations.GraphQLNonNull;
-import jakarta.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class PostInput {
+public class Author {
     @GraphQLNonNull
-    private String title;
-
+    private String id;
     @GraphQLNonNull
-    private String content;
+    private String firstname;
+    @GraphQLNonNull
+    private String lastname;
+    @GraphQLNonNull
+    private String email;
 }

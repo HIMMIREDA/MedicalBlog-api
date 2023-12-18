@@ -1,4 +1,4 @@
-package com.ensa.medicalblog.config;
+package com.ensa.medicalblog.config.security;
 
 import com.ensa.medicalblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

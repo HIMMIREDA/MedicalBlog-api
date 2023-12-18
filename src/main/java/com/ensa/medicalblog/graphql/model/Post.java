@@ -28,4 +28,10 @@ public class Post {
 
     @GraphQLNonNull
     private LocalDateTime createdAt;
+
+    @GraphQLNonNull
+    private Author author;
+
+    @GraphQLNonNull
+    private String image;
 }

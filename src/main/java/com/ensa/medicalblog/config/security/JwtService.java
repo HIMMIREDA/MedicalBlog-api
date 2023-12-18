@@ -1,4 +1,4 @@
-package com.ensa.medicalblog.config;
+package com.ensa.medicalblog.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

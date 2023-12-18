@@ -1,6 +1,6 @@
 package com.ensa.medicalblog.service.impl;
 
-import com.ensa.medicalblog.config.JwtService;
+import com.ensa.medicalblog.config.security.JwtService;
 import com.ensa.medicalblog.entity.Role;
 import com.ensa.medicalblog.entity.TokenEntity;
 import com.ensa.medicalblog.entity.TokenType;
