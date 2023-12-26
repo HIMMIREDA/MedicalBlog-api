@@ -72,9 +72,12 @@ public class PostServiceImpl implements PostService {
         PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
         return Post.builder()
                 .id(postEntity.getId())
-                .title(postEntity.getTitle())
                 .content(postEntity.getContent())
+                .title(postEntity.getTitle())
                 .createdAt(postEntity.getCreatedAt())
+                .tags(postEntity.getTags())
+                .likes(postEntity.getLikes())
+                .comments(postEntity.getComments())
                 .build();
     }
 
@@ -86,6 +89,9 @@ public class PostServiceImpl implements PostService {
                         .title(getPostById(postTag.getPostId()).getTitle())
                         .content(getPostById(postTag.getPostId()).getContent())
                         .createdAt(getPostById(postTag.getPostId()).getCreatedAt())
+                        .tags(getPostById(postTag.getPostId()).getTags())
+                        .likes(getPostById(postTag.getPostId()).getLikes())
+                        .comments(getPostById(postTag.getPostId()).getComments())
                         .build())
                 .toList();
 
@@ -96,9 +102,12 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAll().stream().map(
                 postEntity -> Post.builder()
                         .id(postEntity.getId())
+                        .content(postEntity.getContent())
                         .title(postEntity.getTitle())
                         .createdAt(postEntity.getCreatedAt())
-                        .content(postEntity.getContent())
+                        .tags(postEntity.getTags())
+                        .likes(postEntity.getLikes())
+                        .comments(postEntity.getComments())
                         .build()
         ).toList();
     }
@@ -115,8 +124,8 @@ public class PostServiceImpl implements PostService {
         CommentEntity comment = CommentEntity.builder()
                 .postId(postEntity.getId())
                 .userId(user.getId())
+                .content(commentInput.getContent())
                 .build();
-
         commentRepository.save(comment);
 
         return Post.builder()

@@ -33,9 +33,9 @@ public class Post {
     @GraphQLNonNull
     private LocalDateTime createdAt;
 
-    private Set<String> tags = new HashSet<>();
+    private Set<String> tags;
 
-    private List<String> comments = new ArrayList<>();
+    private List<String> comments;
 
     private Integer likes;
 }

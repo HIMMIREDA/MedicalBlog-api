@@ -27,6 +27,6 @@ public class PostQuery {
     }
 
     @GraphQLQuery
-    public List<Post> postByTag(String tag) {return postService.getPostsByTag(tag);}
+    public List<Post> postsByTag(String tag) {return postService.getPostsByTag(tag);}
 
 }
