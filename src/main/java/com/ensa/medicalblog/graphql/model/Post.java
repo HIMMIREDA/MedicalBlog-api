@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.graphql.model;
 
+import com.ensa.medicalblog.entity.CommentEntity;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +41,7 @@ public class Post {
     private String image;
     private Set<String> tags;
 
-    private List<String> comments;
+    private List<CommentEntity> comments;
 
     private Integer likes;
 }

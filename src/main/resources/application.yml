@@ -9,7 +9,7 @@ application:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/medBlog
+      uri: mongodb://localhost:27018/medBlog
       auto-index-creation: true
     #elasticsearch:
 

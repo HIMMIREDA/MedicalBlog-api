@@ -48,7 +48,7 @@ public class PostEntity {
     private UserEntity author;
     private Set<String> tags = new HashSet<>();
 
-    private List<String> comments = new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 
     private Integer likes;
 
