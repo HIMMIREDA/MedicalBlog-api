@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class CommentEntity {
     @MongoId(FieldType.OBJECT_ID)
     private String id;
+    private String content;
     private String postId;
     private String userId;
 }

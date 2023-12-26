@@ -6,18 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterInput {
-
+@Data
+@Builder
+public class CommentInput {
     @GraphQLNonNull
-    private String firstname;
+    private String postId;
     @GraphQLNonNull
-    private String lastname;
-    @GraphQLNonNull
-    private String email;
-    @GraphQLNonNull
-    private String password;
+    private String content;
 }

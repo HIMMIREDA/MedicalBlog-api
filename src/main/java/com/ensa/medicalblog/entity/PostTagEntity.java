@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.entity;
 
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +20,10 @@ public class PostTagEntity {
     private String id;
     private String postId;
     private String tagId;
+    private Boolean liked;
+
+    @PrePersist
+    public void prePersist() {
+        this.liked = false;
+    }
 }

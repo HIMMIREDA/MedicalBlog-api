@@ -11,6 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,4 +32,10 @@ public class Post {
 
     @GraphQLNonNull
     private LocalDateTime createdAt;
+
+    private Set<String> tags = new HashSet<>();
+
+    private List<String> comments = new ArrayList<>();
+
+    private Integer likes;
 }

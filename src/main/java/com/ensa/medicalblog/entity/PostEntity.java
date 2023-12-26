@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.entity;
 
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,10 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Document(collection = "post")
 @Builder
@@ -36,4 +41,14 @@ public class PostEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    private Set<String> tags = new HashSet<>();
+
+    private List<String> comments = new ArrayList<>();
+
+    private Integer likes;
+
+    @PrePersist
+    public void prePersist() {
+            this.likes = 0;
+        }
 }
