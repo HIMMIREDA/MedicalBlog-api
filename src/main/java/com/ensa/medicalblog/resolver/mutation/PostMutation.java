@@ -30,4 +30,15 @@ public class PostMutation {
         return postService.comment(commentInput);
     }
 
+    @GraphQLMutation
+    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
+    public void like(@GraphQLNonNull String postId){
+        postService.like(postId);
+    }
+
+    @GraphQLMutation
+    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
+    public void unlike(@GraphQLNonNull String postId){
+        postService.unlike(postId);
+    }
 }

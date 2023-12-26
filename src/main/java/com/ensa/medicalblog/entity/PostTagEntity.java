@@ -20,10 +20,5 @@ public class PostTagEntity {
     private String id;
     private String postId;
     private String tagId;
-    private Boolean liked;
 
-    @PrePersist
-    public void prePersist() {
-        this.liked = false;
-    }
 }

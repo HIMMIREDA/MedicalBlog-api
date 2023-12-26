@@ -21,9 +21,12 @@ public class PostServiceImpl implements PostService {
     private PostTagRepository postTagRepository;
     private CommentRepository commentRepository;
     private UserRepository userRepository;
+    private LikeRepository likeRepository;
 
     @Override
     public Post createPost(PostInput createPostRequest) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
         PostEntity postEntity = PostEntity.builder()
                 .title(createPostRequest.getTitle())
@@ -43,6 +46,13 @@ public class PostServiceImpl implements PostService {
             PostTagEntity postTagEntity = PostTagEntity.builder().tagId(tagRepository.findByTagName(tagName).get().getId()).postId(postEntity.getId()).build();
             postTagRepository.save(postTagEntity);
         }
+
+        LikeEntity likeEntity = LikeEntity.builder()
+                .userId(user.getId())
+                .postId(postEntity.getId())
+                .build();
+
+        likeRepository.save(likeEntity);
 
         return Post.builder()
                 .id(postEntity.getId())
@@ -95,7 +105,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post comment(CommentInput commentInput) {
-        //Principal
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
@@ -123,11 +132,32 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void like(String postId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
+        LikeEntity likeEntity = likeRepository.findByPostIdAndUserId(postId,user.getId());
+        PostEntity postEntity = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        if(likeEntity.getLiked().equals(false)) {
+            postEntity.setLikes(postEntity.getLikes() + 1);
+            likeEntity.setLiked(true);
+            postRepository.save(postEntity);
+            likeRepository.save(likeEntity);
+        }
     }
 
     @Override
     public void unlike(String postId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
+
+        LikeEntity likeEntity = likeRepository.findByPostIdAndUserId(postId,user.getId());
+        PostEntity postEntity = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        if(likeEntity.getLiked().equals(true)) {
+            postEntity.setLikes(postEntity.getLikes() - 1);
+            likeEntity.setLiked(true);
+            postRepository.save(postEntity);
+            likeRepository.save(likeEntity);
+        }
 
     }
 }
