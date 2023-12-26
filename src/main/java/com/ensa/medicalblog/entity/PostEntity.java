@@ -26,10 +26,7 @@ public class PostEntity {
     @Indexed
     private String title;
 
-
-
     private String content;
-
 
     @Field(targetType = FieldType.DATE_TIME)
     @CreatedDate

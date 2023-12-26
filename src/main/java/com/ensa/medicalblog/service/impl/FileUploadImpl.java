@@ -26,11 +26,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileUploadImpl implements FileUpload {
 
-    @Value("${api.url}")
-    private String apiUrl;
     private final Cloudinary cloudinary;
     private final UserRepository userRepository;
-
 
     @Override
     public String uploadFile(MultipartFile multipartFile) throws IOException {
@@ -47,37 +44,10 @@ public class FileUploadImpl implements FileUpload {
         return url;
     }
 
-    @Override
-    public String predictPlantDisease(MultipartFile file) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        try {
-            body.add("file", new FileSystemResource(convert(file)));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> responseEntity = new RestTemplate().exchange(
-                apiUrl,
-                HttpMethod.POST,
-                requestEntity,
-                String.class
-        );
-
-        return responseEntity.getBody();
-    }
-
     private File convert(MultipartFile file) throws IOException {
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         File convFile = new File(fileName);
         Files.copy(file.getInputStream(), convFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         return convFile;
     }
-
-
 }
