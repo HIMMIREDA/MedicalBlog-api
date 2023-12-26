@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterInput {
 
-
     @GraphQLNonNull
     private String firstname;
     @GraphQLNonNull
