@@ -32,13 +32,8 @@ public class PostMutation {
 
     @GraphQLMutation
     @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
-    public void like(@GraphQLNonNull String postId){
-        postService.like(postId);
+    public void react(@GraphQLNonNull String postId){
+        postService.react(postId);
     }
 
-    @GraphQLMutation
-    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
-    public void unlike(@GraphQLNonNull String postId){
-        postService.unlike(postId);
-    }
 }

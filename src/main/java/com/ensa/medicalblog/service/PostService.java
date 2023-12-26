@@ -18,9 +18,7 @@ public interface PostService {
 
     Post comment(CommentInput commentInput);
 
-    void like(String postId);
-
-    void unlike(String postId);
+    public void react(String postId);
 
 
 }
