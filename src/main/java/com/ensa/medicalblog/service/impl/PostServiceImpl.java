@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -109,7 +110,11 @@ public class PostServiceImpl implements PostService {
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
         PostEntity postEntity = postRepository.findById(commentInput.getPostId()).orElseThrow(() -> new RuntimeException("Post not found"));
-        postEntity.getComments().add(commentInput.getContent());
+        postEntity.getComments().add(CommentEntity.builder()
+                        .content(commentInput.getContent())
+                        .userId(user.getId())
+                        .postId(postEntity.getId())
+                        .build());
         postRepository.save(postEntity);
 
         CommentEntity comment = CommentEntity.builder()
@@ -131,34 +136,38 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void like(String postId) {
+    public void react(String postId){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
         PostEntity postEntity = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        postEntity.setLikes(postEntity.getLikes() + 1);
-        postRepository.save(postEntity);
-
-        LikeEntity likeEntity = LikeEntity.builder()
-                .userId(user.getId())
-                .postId(postEntity.getId())
-                .liked(true)
-                .build();
-        likeRepository.save(likeEntity);
-    }
-
-    @Override
-    public void unlike(String postId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
-
-        LikeEntity likeEntity = likeRepository.findByPostIdAndUserId(postId,user.getId()).orElseThrow(()->new RuntimeException("Post must me liked to unlike"));
-        PostEntity postEntity = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        if(likeEntity.getLiked().equals(true)) {
-            postEntity.setLikes(postEntity.getLikes() - 1);
-            likeEntity.setLiked(false);
+        Optional<LikeEntity> likeEntityOptional = likeRepository.findByPostIdAndUserId(postId, user.getId());
+        if (!likeEntityOptional.isPresent()) {
+            postEntity.setLikes(postEntity.getLikes() + 1);
             postRepository.save(postEntity);
+
+            LikeEntity likeEntity = LikeEntity.builder()
+                    .userId(user.getId())
+                    .postId(postEntity.getId())
+                    .liked(true)
+                    .build();
             likeRepository.save(likeEntity);
+        }
+        else{
+            if(likeEntityOptional.get().getLiked().equals(false)){
+                postEntity.setLikes(postEntity.getLikes() + 1);
+                postRepository.save(postEntity);
+
+                likeEntityOptional.get().setLiked(true);
+                likeRepository.save(likeEntityOptional.get());
+            }
+            else{
+                postEntity.setLikes(postEntity.getLikes() - 1);
+                postRepository.save(postEntity);
+
+                likeEntityOptional.get().setLiked(false);
+                likeRepository.save(likeEntityOptional.get());
+            }
         }
 
     }
