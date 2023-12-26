@@ -9,6 +9,7 @@ public class PostMapper {
         return PostEntity.builder()
                 .title(postInput.getTitle())
                 .content(postInput.getContent())
+                .tags(postInput.getTags())
                 .build();
     }
 
@@ -20,6 +21,9 @@ public class PostMapper {
                 .title(postEntity.getTitle())
                 .createdAt(postEntity.getCreatedAt())
                 .image(postEntity.getImage())
+                .tags(postEntity.getTags())
+                .comments(postEntity.getComments())
+                .likes(postEntity.getLikes())
                 .author(AuthorMapper.toModel(postEntity.getAuthor()))
                 .build();
     }

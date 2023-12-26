@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.entity;
 
+import java.util.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

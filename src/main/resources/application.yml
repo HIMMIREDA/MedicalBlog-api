@@ -9,7 +9,7 @@ application:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27018/medBlog
+      uri: mongodb://localhost:27017/medBlog
       auto-index-creation: true
     #elasticsearch:
 
@@ -20,4 +20,8 @@ graphql:
 cloudinary:
   cloud_name: "ddhyzyvmp"
   api_key: "499422265967399"
+<<<<<<< HEAD
   api_secret: "o-9RNNUKuufv7sTO-Y77XbHJ7dU"
+=======
+  api_secret: "o-9RNNUKuufv7sTO-Y77XbHJ7dU"
+>>>>>>> f4180b2cb6577a72db4bc36f337ded79782c007e

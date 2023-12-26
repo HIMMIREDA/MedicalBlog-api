@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.resolver.mutation;
 
+import com.ensa.medicalblog.graphql.input.CommentInput;
 import com.ensa.medicalblog.graphql.input.PostInput;
 import com.ensa.medicalblog.graphql.model.Post;
 import com.ensa.medicalblog.service.PostService;
@@ -32,5 +33,23 @@ public class PostMutation {
         return postService.createPost(postInput, request.getPart("file"));
     }
 
+
+    @GraphQLMutation
+    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
+    public @GraphQLNonNull Post comment(@GraphQLNonNull CommentInput commentInput){
+        return postService.comment(commentInput);
+    }
+
+    @GraphQLMutation
+    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
+    public void like(@GraphQLNonNull String postId){
+        postService.like(postId);
+    }
+
+    @GraphQLMutation
+    @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
+    public void unlike(@GraphQLNonNull String postId){
+        postService.unlike(postId);
+    }
 
 }

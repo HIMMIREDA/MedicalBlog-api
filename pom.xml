@@ -80,6 +80,7 @@
             <artifactId>graphql-spqr-spring-boot-starter</artifactId>
             <version>1.0.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http44</artifactId>
@@ -91,6 +92,7 @@
             <artifactId>commons-io</artifactId>
             <version>2.15.1</version>
         </dependency>
+
 
 
 
