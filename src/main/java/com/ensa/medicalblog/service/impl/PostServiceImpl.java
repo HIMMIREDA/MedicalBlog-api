@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -65,14 +64,13 @@ public class PostServiceImpl implements PostService {
         postEntity.setComments(sortedComments);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Post post = PostMapper.toModel(postEntity);
-        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()){
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
             String username = authentication.getName();
             System.out.println(username);
             UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
             Optional<LikeEntity> likeEntityOptional = likeRepository.findByPostIdAndUserId(postEntity.getId(), user.getId());
             post.setIsLiked(likeEntityOptional.isPresent() && (likeEntityOptional.get().getLiked()));
-            System.out.println("post is liked "+ likeEntityOptional.get().getLiked());
-        }else{
+        } else {
             post.setIsLiked(false);
         }
 
@@ -124,7 +122,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void react(String postId){
+    public void react(String postId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
@@ -142,16 +140,14 @@ public class PostServiceImpl implements PostService {
                     .liked(true)
                     .build();
             likeRepository.save(likeEntity);
-        }
-        else{
-            if(likeEntityOptional.get().getLiked().equals(false)){
+        } else {
+            if (likeEntityOptional.get().getLiked().equals(false)) {
                 postEntity.setLikes(postEntity.getLikes() + 1);
                 postRepository.save(postEntity);
 
                 likeEntityOptional.get().setLiked(true);
                 likeRepository.save(likeEntityOptional.get());
-            }
-            else{
+            } else {
                 postEntity.setLikes(postEntity.getLikes() - 1);
                 postRepository.save(postEntity);
 
