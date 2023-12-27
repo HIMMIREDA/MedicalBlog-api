@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.resolver.mutation;
 
+import com.ensa.medicalblog.entity.CommentEntity;
 import com.ensa.medicalblog.graphql.input.CommentInput;
 import com.ensa.medicalblog.graphql.input.PostInput;
 import com.ensa.medicalblog.graphql.model.Post;
@@ -36,7 +37,7 @@ public class PostMutation {
 
     @GraphQLMutation
     @PreAuthorize("hasRole(T(com.ensa.medicalblog.entity.Role).USER)")
-    public @GraphQLNonNull Post comment(@GraphQLNonNull CommentInput commentInput){
+    public @GraphQLNonNull CommentEntity comment(@GraphQLNonNull CommentInput commentInput){
         return postService.comment(commentInput);
     }
 

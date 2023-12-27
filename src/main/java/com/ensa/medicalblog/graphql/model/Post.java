@@ -44,4 +44,5 @@ public class Post {
     private List<CommentEntity> comments;
 
     private Integer likes;
+    private Boolean isLiked;
 }

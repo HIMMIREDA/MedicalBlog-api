@@ -10,12 +10,18 @@ import com.ensa.medicalblog.service.ImageService;
 import com.ensa.medicalblog.service.PostService;
 import jakarta.servlet.http.Part;
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +31,6 @@ public class PostServiceImpl implements PostService {
     private ImageService imageService;
     private TagRepository tagRepository;
     private PostTagRepository postTagRepository;
-    private CommentRepository commentRepository;
     private UserRepository userRepository;
     private LikeRepository likeRepository;
 
@@ -54,7 +59,25 @@ public class PostServiceImpl implements PostService {
     public Post getPostById(String id) {
         // @TODO: change exception handling later
         PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
-        return PostMapper.toModel(postEntity);
+        List<CommentEntity> sortedComments = postEntity.getComments().stream()
+                .sorted(Comparator.comparing(CommentEntity::getCreatedAt, Comparator.reverseOrder()))
+                .toList();
+        postEntity.setComments(sortedComments);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Post post = PostMapper.toModel(postEntity);
+        if(authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()){
+            String username = authentication.getName();
+            System.out.println(username);
+            UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
+            Optional<LikeEntity> likeEntityOptional = likeRepository.findByPostIdAndUserId(postEntity.getId(), user.getId());
+            post.setIsLiked(likeEntityOptional.isPresent() && (likeEntityOptional.get().getLiked()));
+            System.out.println("post is liked "+ likeEntityOptional.get().getLiked());
+        }else{
+            post.setIsLiked(false);
+        }
+
+
+        return post;
     }
 
 
@@ -81,27 +104,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post comment(CommentInput commentInput) {
+    public CommentEntity comment(CommentInput commentInput) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
 
         PostEntity postEntity = postRepository.findById(commentInput.getPostId()).orElseThrow(() -> new RuntimeException("Post not found"));
-        postEntity.getComments().add(CommentEntity.builder()
-                        .content(commentInput.getContent())
-                        .userId(user.getId())
-                        .postId(postEntity.getId())
-                        .build());
+        CommentEntity commentEntity = CommentEntity.builder()
+                .id(new ObjectId().toString())
+                .content(commentInput.getContent())
+                .userId(user.getId())
+                .postId(postEntity.getId())
+                .username(user.getFirstname() + "_" + user.getLastname())
+                .createdAt(LocalDateTime.now())
+                .build();
+        postEntity.getComments().add(commentEntity);
         postRepository.save(postEntity);
 
-        CommentEntity comment = CommentEntity.builder()
-                .postId(postEntity.getId())
-                .userId(user.getId())
-                .username(user.getFirstname() + "_" + user.getLastname())
-                .content(commentInput.getContent())
-                .build();
-        commentRepository.save(comment);
-
-        return PostMapper.toModel(postEntity);
+        return commentEntity;
     }
 
     @Override

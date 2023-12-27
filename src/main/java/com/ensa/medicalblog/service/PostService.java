@@ -1,5 +1,6 @@
 package com.ensa.medicalblog.service;
 
+import com.ensa.medicalblog.entity.CommentEntity;
 import com.ensa.medicalblog.entity.PostEntity;
 import com.ensa.medicalblog.graphql.input.CommentInput;
 import com.ensa.medicalblog.graphql.input.PostInput;
@@ -19,7 +20,7 @@ public interface PostService {
 
     List<Post> getPosts();
 
-    Post comment(CommentInput commentInput);
+    CommentEntity comment(CommentInput commentInput);
 
     public void react(String postId);
 
