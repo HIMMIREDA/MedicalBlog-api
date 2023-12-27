@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document(collection = "comment")
+import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor
 @Data
@@ -19,4 +22,7 @@ public class CommentEntity {
     private String content;
     private String postId;
     private String userId;
+    private String username;
+
+    private LocalDateTime createdAt;
 }

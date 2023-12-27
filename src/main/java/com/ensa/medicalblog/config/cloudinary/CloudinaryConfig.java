@@ -1,4 +1,4 @@
-package com.ensa.medicalblog.config;
+package com.ensa.medicalblog.config.cloudinary;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;

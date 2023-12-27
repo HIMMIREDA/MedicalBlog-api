@@ -5,13 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.mongodb.core.mapping.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +30,9 @@ public class PostEntity {
     @Indexed
     private String title;
 
+
+    private String image;
+
     private String content;
 
     @Field(targetType = FieldType.DATE_TIME)
@@ -41,6 +43,9 @@ public class PostEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @CreatedBy
+    @DBRef
+    private UserEntity author;
     private Set<String> tags = new HashSet<>();
 
     private List<CommentEntity> comments = new ArrayList<>();

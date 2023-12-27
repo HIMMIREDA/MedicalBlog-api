@@ -1,14 +1,18 @@
 package com.ensa.medicalblog.service;
 
+import com.ensa.medicalblog.entity.CommentEntity;
 import com.ensa.medicalblog.entity.PostEntity;
 import com.ensa.medicalblog.graphql.input.CommentInput;
 import com.ensa.medicalblog.graphql.input.PostInput;
 import com.ensa.medicalblog.graphql.model.Post;
+import jakarta.servlet.http.Part;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PostService {
-    Post createPost(PostInput postInput);
+    Post createPost(PostInput postInput, Part file) throws IOException;
 
     Post getPostById(String id);
 
@@ -16,7 +20,7 @@ public interface PostService {
 
     List<Post> getPosts();
 
-    Post comment(CommentInput commentInput);
+    CommentEntity comment(CommentInput commentInput);
 
     public void react(String postId);
 

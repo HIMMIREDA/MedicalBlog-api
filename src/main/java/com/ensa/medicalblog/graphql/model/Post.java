@@ -34,9 +34,15 @@ public class Post {
     @GraphQLNonNull
     private LocalDateTime createdAt;
 
+    @GraphQLNonNull
+    private Author author;
+
+    @GraphQLNonNull
+    private String image;
     private Set<String> tags;
 
     private List<CommentEntity> comments;
 
     private Integer likes;
+    private Boolean isLiked;
 }
