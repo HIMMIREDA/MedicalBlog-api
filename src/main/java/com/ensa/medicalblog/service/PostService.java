@@ -18,7 +18,7 @@ public interface PostService {
 
     List<Post> getPostsByTag(String tag);
 
-    List<Post> getPosts();
+    List<Post> getPosts(int offset, int limit);
 
     CommentEntity comment(CommentInput commentInput);
 

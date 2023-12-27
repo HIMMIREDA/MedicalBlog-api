@@ -6,11 +6,15 @@ import com.ensa.medicalblog.graphql.input.PostInput;
 import com.ensa.medicalblog.graphql.model.Post;
 import com.ensa.medicalblog.mapper.PostMapper;
 import com.ensa.medicalblog.repository.*;
+import com.ensa.medicalblog.repository.pagination.OffsetBasedPageable;
 import com.ensa.medicalblog.service.ImageService;
 import com.ensa.medicalblog.service.PostService;
 import jakarta.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -96,9 +100,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPosts() {
-
-        return postRepository.findAll().stream().map(PostMapper::toModel).toList();
+    public List<Post> getPosts(int offset, int limit) {
+        Pageable paging = new OffsetBasedPageable(offset, limit, Sort.by("createdAt").descending());
+        return postRepository.findAll(paging).getContent().stream().map(PostMapper::toModel).toList();
     }
 
     @Override

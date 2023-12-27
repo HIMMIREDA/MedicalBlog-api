@@ -18,7 +18,7 @@ public class PostMapper {
     }
 
     static public Post toModel(PostEntity postEntity) {
-        System.out.println(postEntity.getComments());
+
         return Post.builder()
                 .id(postEntity.getId())
                 .content(postEntity.getContent())

@@ -25,8 +25,8 @@ public class PostQuery {
     }
 
     @GraphQLQuery
-    public @GraphQLNonNull List<@GraphQLNonNull Post> posts() {
-        return postService.getPosts();
+    public @GraphQLNonNull List<@GraphQLNonNull Post> posts(int offset, int limit) {
+        return postService.getPosts(offset, limit);
     }
 
     @GraphQLQuery

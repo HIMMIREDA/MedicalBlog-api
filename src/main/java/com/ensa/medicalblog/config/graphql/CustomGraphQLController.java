@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.GraphQL;
 import io.leangen.graphql.spqr.spring.web.GraphQLController;
 import io.leangen.graphql.spqr.spring.web.GraphQLExecutor;
+import io.leangen.graphql.spqr.spring.web.dto.ExecutorParams;
 import io.leangen.graphql.spqr.spring.web.dto.GraphQLRequest;
+import io.leangen.graphql.spqr.spring.web.dto.TransportType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,8 @@ public class CustomGraphQLController extends GraphQLController<NativeWebRequest>
         Map<String, ArrayList<String>> fileMap = new ObjectMapper().readerFor(Map.class).readValue(map);
 
         mapRequestFilesToVariables(multiPartRequest, graphQLRequest, fileMap);
-        return this.executeJsonPost(graphQLRequest, new GraphQLRequest(null, null, null, null), webRequest);
+
+        return this.executeJsonPost(graphQLRequest, graphQLRequest, webRequest);
     }
     private void mapRequestFilesToVariables(MultipartHttpServletRequest multiPartRequest, GraphQLRequest graphQLRequest,
                                             Map<String, ArrayList<String>> fileMap) throws IOException, ServletException {
